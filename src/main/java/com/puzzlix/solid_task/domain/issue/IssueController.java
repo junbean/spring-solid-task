@@ -24,9 +24,7 @@ public class IssueController {
     @PostMapping
     public ResponseEntity<CommonResponseDto<Issue>> createIssue(@RequestBody IssueRequest.Create request) {
         Issue createdIssue = issueService.createIssue(request);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(CommonResponseDto.success(createdIssue));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponseDto.success(createdIssue));
     }
 
 

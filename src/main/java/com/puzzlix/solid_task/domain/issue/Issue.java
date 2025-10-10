@@ -1,14 +1,24 @@
 package com.puzzlix.solid_task.domain.issue;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 public class Issue {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
+
+    @Enumerated(EnumType.STRING) // enum타입을 지원하는 어노테이션
     private IssueStatus issueStatus; // 시작 진행중 완료 상태 (범위)
 
     // 추후 연관 관계 필드
