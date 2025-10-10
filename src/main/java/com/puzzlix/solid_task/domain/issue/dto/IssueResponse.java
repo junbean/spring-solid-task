@@ -2,6 +2,7 @@ package com.puzzlix.solid_task.domain.issue.dto;
 
 import com.puzzlix.solid_task.domain.issue.Issue;
 import com.puzzlix.solid_task.domain.issue.IssueStatus;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +10,21 @@ import java.util.List;
 public class IssueResponse {
 
     // 모든 이슈 보여주기, 단일 이슈 보여주기
+    @Getter
     public static class FindAll {
         private final Long id;
         private final String title;
         private final IssueStatus status;
+        private final String reporterName;
 
         // 생성자를 private 선언
         private FindAll(Issue issue) {
             this.id = issue.getId();
             this.title = issue.getTitle();
             this.status = issue.getIssueStatus();
+            // 현재 Lazy 로딩 전략 - issue 안에 포함된
+            // User 탐색하게 되면 추가 쿼리가 발생됨 -> N+1 문제
+            this.reporterName = issue.getReporter().getName();
         }
 
         // 정적 팩토리 메서드 선언 (이녀석은 제네릭이 아님)
