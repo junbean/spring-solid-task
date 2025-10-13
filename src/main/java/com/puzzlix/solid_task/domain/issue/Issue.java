@@ -4,10 +4,7 @@ import com.puzzlix.solid_task.domain.comment.Comment;
 import com.puzzlix.solid_task.domain.project.Project;
 import com.puzzlix.solid_task.domain.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString(exclude = {"project", "reporter", "assignee", "comments"})
 public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +47,6 @@ public class Issue {
     // 이슈 너는 댓글에 외래키 주인이 아니야
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
-
 }
 
 // 칸반 보드???

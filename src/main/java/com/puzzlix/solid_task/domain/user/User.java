@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_table")
-@ToString // 연관 관계 사용할 때 고통을 겪는 코드, 순환 참조 일으킴
+@ToString(exclude = {"issues"}) // 연관 관계 사용할 때 고통을 겪는 코드, 순환 참조 일으킴
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 사용하는 DB의 제약을 따라서 시퀀스 값으로 지정함
