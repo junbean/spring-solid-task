@@ -6,6 +6,7 @@ import lombok.Setter;
 public class IssueRequest {
 
     // 모바일에서 또는 클라이언트에서 - 이슈 생성 요청
+    // IssueRequest.Create dto = new IssueRequest.Create(...);
     @Getter
     @Setter
     public static class Create {
@@ -16,6 +17,14 @@ public class IssueRequest {
         private Long reporterId;
     }   // end of static inner class
 
-    // IssueRequest.Create dto = new IssueRequest.Create(...);
 
+    //
+    @Getter
+    @Setter
+    public static class Update {
+        private String title;
+        private String description;
+        private Long assignee_id;
+    }
 }
+

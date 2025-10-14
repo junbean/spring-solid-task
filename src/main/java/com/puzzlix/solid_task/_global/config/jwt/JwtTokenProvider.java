@@ -36,10 +36,10 @@ public class JwtTokenProvider {
 
         // 속성 조사해보기
         return Jwts.builder()
-                .subject(email) // 주제(subject) 필드 생성 - 누구의 토큰인지 나타내는 값
-                .issuedAt(now)
-                .expiration(validity)
-                .signWith(key)
+                .subject(email) // 사용자 식별자 설정
+                .issuedAt(now)  // 발급 시간
+                .expiration(validity)   // 만료 시간
+                .signWith(key)  // 서명
                 .compact();
     }
 

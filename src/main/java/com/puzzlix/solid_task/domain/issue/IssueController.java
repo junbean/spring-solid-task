@@ -11,11 +11,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/issues")
 @RequiredArgsConstructor
+@RequestMapping("/api/issues")
 public class IssueController {
 
     private final IssueService issueService;
+
+    /**
+     * 이슈 수정 API
+     * PUT /api/issues/{id}
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<CommonResponseDto<IssueResponse.FindById>> updateIssue(
+            @PathVariable Long id,
+            @RequestBody IssueRequest.Update request
+    ) {
+        // 인증 검사
+        Issue issue = issueService.updateIssue(id, request);
+
+        return ResponseEntity
+                .ok(CommonResponseDto.success(new IssueResponse.FindById(issue)
+                        , "이슈가 성공적으로 변경되었습니다"));
+        // 유효성 검사
+    }
+
+    /**
+     * 이슈 삭제 API
+     */
+
 
     /**
      * 이슈 생성 API

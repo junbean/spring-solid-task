@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -23,16 +24,22 @@ public class DataLoader implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final IssueRepository issueRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Override
     public void run(String... args) throws Exception {
         // 샘플 데이터를 추가할 수 있다
         User testUser1 = userRepository.save(
-                new User(null, "홍길동", "test1@naver.com", "1234", new ArrayList<>())
+                new User(null, "홍길동",
+                        "test1@naver.com",
+                        passwordEncoder.encode("1234"), new ArrayList<>())
         );
 
         User testUser2 = userRepository.save(
-                new User(null, "이순신", "test2@naver.com", "1234", new ArrayList<>())
+                new User(null, "이순신",
+                        "test2@naver.com",
+                        passwordEncoder.encode("1234"), new ArrayList<>())
         );
 
         Project testProject = projectRepository.save(

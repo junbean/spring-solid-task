@@ -28,13 +28,15 @@ public class UserController {
     // 자우너 수정 --> PUT, Patch
     // 자원 삭제 --> DELETE
     // 보안상 중요해서 GET이 아니라 POST를 사용한다
-    @PostMapping("/login")
-    public ResponseEntity<CommonResponseDto<?>> login(@Valid @RequestBody UserRequest.Login request) {
-        User user = userService.login(request);
+    @PostMapping("/login/{type}")
+    public ResponseEntity<CommonResponseDto<?>> login(
+            @PathVariable(name = "type") String type,
+            @Valid @RequestBody UserRequest.Login request) {
+        User user = userService.login(type, request);
         // 사용자 이메일을 기반으로 JWT토큰 생성
-        String token = jwtTokenProvider.createToken(user.getEmail());  // 토큰에 진짜 중요한 정보를 넣으면 안됨(해봣짜 이메일 정도?)
-
-        return ResponseEntity.ok(CommonResponseDto.success(null, "로그인에 성공했습니다"));
+        // 토큰에 진짜 중요한 정보를 넣으면 안됨(해봣짜 이메일 정도?)
+        String token = jwtTokenProvider.createToken(user.getEmail());
+        return ResponseEntity.ok(CommonResponseDto.success(token, "로그인에 성공했습니다"));
     }
 
 
