@@ -1,5 +1,7 @@
 package com.puzzlix.solid_task._global.config.jwt;
 
+import com.puzzlix.solid_task.domain.user.Role;
+import com.puzzlix.solid_task.domain.user.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -20,8 +22,10 @@ public class JwtTokenProvider {
     private final long validityInMilliseconds;
 
     // 생성자 주입으로 설계해 보자 (주입 시 연산을 해야될 경우 직접 생성자를 만들어서 세팅)
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey,
-                            @Value("${jwt.expiration-in-ms}") long validityInMilliseconds) {
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String secretKey,
+            @Value("${jwt.expiration-in-ms}") long validityInMilliseconds
+    ) {
         // 1. 주입받은 비밀 키 문자열을 Base64 값을 디코딩 하여 byte 배열로 변환 한다
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         // 2. 알고리즘을 사용할 SecretKey 객체를 생성한다
@@ -30,13 +34,14 @@ public class JwtTokenProvider {
     }
 
     //
-    public String createToken(String email) {
+    public String createToken(User user) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);   // 현재 시간 + 1시간 = 만료시간
 
         // 속성 조사해보기
         return Jwts.builder()
-                .subject(email) // 사용자 식별자 설정
+                .subject(user.getEmail()) // 사용자 식별자 설정
+                .claim("role", user.getRole().name())
                 .issuedAt(now)  // 발급 시간
                 .expiration(validity)   // 만료 시간
                 .signWith(key)  // 서명
@@ -77,6 +82,12 @@ public class JwtTokenProvider {
         return parseClaims(token).getSubject();
     }
 
+    // 5분 - ROLE 메서드 만들어 보시오
+    public Role getRole(String token) {
+        String roleStr = parseClaims(token).get("role", String.class);
+        return Role.valueOf(roleStr);
+    }
+    
     /**
      * 클레임 정보를 추출하는 기능
      */
@@ -92,8 +103,4 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
-
-
-
-
 }

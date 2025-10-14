@@ -35,7 +35,7 @@ public class UserController {
         User user = userService.login(type, request);
         // 사용자 이메일을 기반으로 JWT토큰 생성
         // 토큰에 진짜 중요한 정보를 넣으면 안됨(해봣짜 이메일 정도?)
-        String token = jwtTokenProvider.createToken(user.getEmail());
+        String token = jwtTokenProvider.createToken(user);
         return ResponseEntity.ok(CommonResponseDto.success(token, "로그인에 성공했습니다"));
     }
 
