@@ -19,21 +19,24 @@ public class IssueController {
 
     private final IssueService issueService;
 
-    /*
-     *   특정 이슈 상태 변경 API (담당자가 진행 상태 변경 관리자도 진행 상태 변경)
-     *   주소 설계 - http://localhost:8080/api/issues/{id}/status
-     * */
+
+    /**
+     * 특정 이슈 상태 변경 API (담당자가 진행 상태 변경 관리자도 진행 상태 변경)
+     *  주소 설계 - http://localhost:8080/api/issues/{id}/status?DONE
+     *  HTTP 메세지
+     */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<CommonResponseDto<?>> updateIssueStatus(
+    public ResponseEntity<?> updateIssueStatus(
             @PathVariable(name = "id") Long issueId,
             @RequestParam("status") IssueStatus newStatus,
             @RequestAttribute("userEmail") String userEmail,
             @RequestAttribute("userRole") Role userRole
-    ){
+    ) {
         Issue issue = issueService.updateIssueStatus(issueId, newStatus, userEmail, userRole);
-        return ResponseEntity
-                .ok(CommonResponseDto
-                        .success(issue,"이슈상태가 성공적으로 변경되었습니다."));
+        // 서비스 호출 -
+        IssueResponse.FindById responseDto = new IssueResponse.FindById(issue);
+        return ResponseEntity.ok(CommonResponseDto
+                .success(responseDto, "이슈 상태가 성공적으로 변경 되었습니다"));
     }
 
     /**
@@ -95,6 +98,7 @@ public class IssueController {
     public ResponseEntity<CommonResponseDto<List<IssueResponse.FindAll>>> getIssues() {
         // 서비스에서 조회 요청
         List<Issue> issues = issueService.findIssues();
+
 
         // 조회된 도메인 이슈 리스트를 DTO로 변환
         List<IssueResponse.FindAll> responseDto = IssueResponse.FindAll.from(issues);

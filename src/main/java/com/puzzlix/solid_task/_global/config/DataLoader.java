@@ -56,7 +56,7 @@ public class DataLoader implements CommandLineRunner {
         );
 
         Project testProject = projectRepository.save(
-                new Project(null, "SOLID TASK 프로젝트", "SOLID 개념 학습", new ArrayList<>())
+                new Project(null, "SOLID TASK 프로젝트", "SOLID 개념 학습")
         );
 
         issueRepository.save(
