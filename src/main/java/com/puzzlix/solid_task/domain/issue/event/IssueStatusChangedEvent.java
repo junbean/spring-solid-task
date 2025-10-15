@@ -15,6 +15,4 @@ public class IssueStatusChangedEvent {
     public IssueStatusChangedEvent(Issue issue) {
         this.issue = issue;
     }
-
-
 }

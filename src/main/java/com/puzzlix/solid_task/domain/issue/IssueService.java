@@ -29,6 +29,14 @@ public class IssueService {
     // 이 객체를 통해서 애플리케이션의 다른 부분에 "어떤 이벤트가 발생 했다" 라는 것을 알릴 수 있다
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * 이슈 상태 변경
+     * @param issueId
+     * @param status
+     * @param requestUserEmail
+     * @param userRole
+     * @return
+     */
     public Issue updateIssueStatus(
             Long issueId,
             IssueStatus status,
@@ -47,8 +55,7 @@ public class IssueService {
         // 더티 체킹 사용
         issue.setIssueStatus(status);
         if(status == IssueStatus.DONE) {
-            // 이벤트 발생(방송)
-            eventPublisher.publishEvent(new IssueStatusChangedEvent(issue));
+            eventPublisher.publishEvent(new IssueStatusChangedEvent(issue));    // 이벤트 발생(방송)
         }
 
         return issue;
@@ -112,17 +119,10 @@ public class IssueService {
             String requestUserEmail,
             Role userRole
     ) {
-//        if(!issueRepository.existsById(issueId)) {
-//            throw new NoSuchElementException("해당 ID의 이슈를 찾을 수 없습니다");
-//        }
-
-//        User user = userRepository.findByEmail(requestUserEmail)
-//                .orElseThrow(() -> new NoSuchElementException("해당 사용자를 찾을 수 없습니다"));
-
         Issue issue = issueRepository.findById(issueId)
                 .orElseThrow(() -> new NoSuchElementException("해당 하는 ID의 이슈를 찾을 수 없습니다."));
 
-        if(userRole != Role.ADMIN && issue.getReporter().getEmail().equals(requestUserEmail) == false) {
+        if(userRole != Role.ADMIN && !issue.getReporter().getEmail().equals(requestUserEmail)) {
             throw new SecurityException("삭제할 권한이 없습니다");
         }
 

@@ -41,12 +41,16 @@ spring:
     show-sql: true # 실행되는 SQL 쿼리를 콘솔에 출력
     # open-in-view: true # 지금 몰라서 잠시 이렇게 함
 
-notification:
-  policy:
-    # 이슈 상태가 DONE 으로 변경되었을 때 사용할 알림 타입 지정
-    on-status-done: SMS
-
 jwt:
   secret: 'VGhpc0lzQVNlY3JldEtleUZvckpXVFNhZmUhIT8xMjM0NTY='
   expiration-in-ms: 3600000 # 1시간
 
+notification:
+  policy:
+    on-status-done: SMS   # 이슈 상태가 DONE 으로 변경되었을 때 사용할 알림 타입 지정
+
+aligo:
+  api:
+    key: "blvdyz2om2308iy8eag0d10sf82ny2qf"
+    user-id: "junbin2438"
+    sender: "01045312438"
