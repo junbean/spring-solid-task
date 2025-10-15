@@ -36,6 +36,8 @@ dependencies {
 	// 3. jjwt-jackson: JSON 파서
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 
+	// 솔라피 SMS API
+	implementation 'com.solapi:sdk:1.0.3'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
