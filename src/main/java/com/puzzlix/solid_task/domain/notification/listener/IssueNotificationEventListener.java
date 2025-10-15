@@ -33,10 +33,11 @@ public class IssueNotificationEventListener {
         if("DONE".equalsIgnoreCase(issue.getIssueStatus().name())) {
             // 팩토리 클래스를 활용해서 현재 알림 전략을 가지고 온다.
             // yml --> EMAIL, SMS
-            NotificationSender sender = notificationSenderFactory.findSender(onStatusDoneType);
+            NotificationSender sender
+                    = notificationSenderFactory.findSender(onStatusDoneType);
             
-            // 이메일 구현 클래스 또는 SMS 구현 클래스는 여기서 send만 호출하면 된다
-        
+            // 이메일 구현 클래스던 , sms 구현 클래스 던 여기서는 send만 호출 하면 됨.
+            sender.send(message);
         }
     }
 
